@@ -1,4 +1,4 @@
-# SingleGile API in Docker
+# SingleFile API in Docker
 SingleFile web API in a Docker container.
 
 I have merely tweaked things to get them to work in 2024.
