@@ -17,6 +17,8 @@ app.use(express.urlencoded({ extended: true }))
 app.post('/', async (req, res) => {
 	const { url } = req.body;
 
+	console.log("request:", JSON.stringify(req.body));
+
 	if (url) {
 		const args = [
 			'--browser-executable-path=' + BROWSER_PATH,
