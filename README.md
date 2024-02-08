@@ -21,7 +21,7 @@ cd singlefile-api-docker
 
 ## Test
 ```bash
-curl -d 'url=http://www.example.com/' singlefile:80
+curl -d 'url=http://www.example.com/' localhost:8001
 ```
 ...which should return the HTML+resources at that url.
 
