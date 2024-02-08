@@ -1,0 +1,9 @@
+version: '3'
+services:
+  urldownloader:
+    build: .
+    entrypoint: python3
+    command: webserver.py
+    ports:
+      - "8001:8001"
+
