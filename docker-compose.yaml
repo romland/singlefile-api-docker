@@ -2,8 +2,8 @@ version: '3'
 services:
   urldownloader:
     build: .
-    entrypoint: python3
-    command: webserver.py
+#    entrypoint: python3
+    command: ./node_modules/nodemon/bin/nodemon.js webserver.js 8001
     ports:
       - "8001:8001"
 

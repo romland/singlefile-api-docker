@@ -1,6 +1,8 @@
 # SingleFile API in Docker
 SingleFile web API in a Docker container.
 
+If I get around to it, I will make it interface with SingleFile using node instead of CLI.
+
 I have merely tweaked things to get them to work in 2024.
 
 The real work by:
