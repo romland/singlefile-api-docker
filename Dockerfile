@@ -14,3 +14,4 @@ WORKDIR /opt/app
 RUN npm install 'gildas-lormeau/SingleFile#master' express nodemon
 
 COPY webserver.js .
+COPY extract-inject.js .
