@@ -2,13 +2,10 @@
 
 const cp = require('child_process');
 const express = require('express');
-const puppeteer = require('puppeteer-core');
 
 const SINGLEFILE_EXECUTABLE = '/opt/app/node_modules/single-file/cli/single-file';
 const BROWSER_PATH = '/opt/google/chrome/google-chrome';
 const BROWSER_ARGS = ['--no-sandbox'];
-
-const iPhone = puppeteer.devices['iPhone 7'];
 
 let port = 3000;
 
