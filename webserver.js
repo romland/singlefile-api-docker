@@ -32,7 +32,7 @@ app.post('/', async (req, res) => {
 			'--dump-content',
 		];
 		const opts = {
-			maxBuffer: 1024 * 1024 * 20
+			maxBuffer: 1024 * 1024 * 50
 		};
 
 		cp.execFile(SINGLEFILE_EXECUTABLE, args, opts, (e, stdout, stderr) => {
