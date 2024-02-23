@@ -31,8 +31,11 @@ app.post('/', async (req, res) => {
 			url,
 			'--dump-content',
 		];
+		const opts = {
+			maxBuffer: 1024 * 1024 * 20
+		};
 
-		cp.execFile(SINGLEFILE_EXECUTABLE, args, (e, stdout, stderr) => {
+		cp.execFile(SINGLEFILE_EXECUTABLE, args, opts, (e, stdout, stderr) => {
 			if(e) {
 				console.log(e);
 				res.status(500).send('Error: ' + e);
