@@ -11,7 +11,17 @@ RUN apt-get update && apt-get install git gnupg wget -y && \
 
 WORKDIR /opt/app
 
-RUN npm install 'gildas-lormeau/SingleFile#master' express nodemon
+RUN npm install 'gildas-lormeau/single-file-cli#master' express nodemon
+# ==============================================================================
+# CRITICAL BUGFIX: REMOVE CHROMIUM '--single-process' FLAG
+# ------------------------------------------------------------------------------
+# Upstream single-file-cli forces Chromium into '--single-process' mode by default.
+# On complex e-commerce sites (IKEA, Amazon, etc.), Web Workers & dynamic scripts 
+# DEADLOCK the single renderer thread. This freezes the DevTools Protocol (CDP) 
+# session, leading to unhandled top-level await crashes (exit code 13).
+# DO NOT REMOVE THIS LINE!
+# ==============================================================================
+RUN sed -i '/--single-process/d' node_modules/single-file-cli/lib/browser.js
 
 COPY webserver.js .
 COPY extract-inject.js .
