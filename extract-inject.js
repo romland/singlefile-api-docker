@@ -1,18 +1,19 @@
 onload = () => {
-    function elementHas(selector, buttonTexts)
-    {
+    function elementHas(selector, buttonTexts) {
         var elements = document.querySelectorAll(selector);
-
         return Array.prototype.filter.call(elements, (element) => {
-            return RegExp(buttonTexts, "i").test(element.textContent.trim());
+            const cleanText = element.textContent.replace(/\s+/g, ' ').trim();
+            return RegExp(buttonTexts, "i").test(cleanText);
         });
     }
 
     let dismissedCookieDialog = false;
     let fallbackExtract = false;
+    
+    // 1. Find and click the button
     const cookieDialogMatches = elementHas(
-        '[aria-label*=cookie] button, [id*=modal] button, [class*=popup] button, [id*=onetrust-banner-sdk] button, [class*=overlay] button, [id*=cookie] a, [class*=cookie] a, [id*=cookie] button, [class*=cookie] button', 
-        '^(Alle akzeptieren|Akzeptieren|Verstanden|Zustimmen|Okay|OK|Accept all|Accept|I understand|Agree|Got it|Accept All|Okej|Alles accepteren|Alle cookies accepteren|Doorgaan|Accepteer alles en sluit|Accept all cookies|Godkänn alla)$'
+        '[aria-label*=cookie] button, [id*=modal] button, [class*=popup] button, [id*=onetrust-banner-sdk] button, [class*=overlay] button, [id*=cookie] a, [class*=cookie] a, [id*=cookie] button, [class*=cookie] button, .fc-cta-consent, [aria-label*="Consent"]', 
+        '^(Alle akzeptieren|Akzeptieren|Verstanden|Zustimmen|Okay|OK|Accept all|Accept|I understand|Agree|Got it|Accept All|Okej|Alles accepteren|Alle cookies accepteren|Doorgaan|Accepteer alles en sluit|Accept all cookies|Godkänn alla|Consent)$'
     );
 
     if (cookieDialogMatches != null && cookieDialogMatches.length != 0) { 
@@ -20,17 +21,28 @@ onload = () => {
         dismissedCookieDialog = true;
     }
 
+    // 2. AGGRESSIVE DOM NUKE
+    // Delete known CMP wrappers immediately so they don't block elementFromPoint
+    document.querySelectorAll('.fc-consent-root, [id*=onetrust-banner], [id*=sp_message_container], [class*=cookie-overlay]').forEach(el => {
+        el.remove();
+    });
+
+    // Unlock scrolling
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
+
+    // 3. Now get the center element
     const centerX = Math.abs(window.innerWidth/2);
     const centerY = Math.abs(window.innerHeight/2);
     let curr = document.elementFromPoint(centerX, centerY);
 
     const title = document.title;
     const url = window.location.href;
-    const centerText = curr.innerText;
+    const centerText = curr ? curr.innerText : "";
     const centerPath = document.elementsFromPoint(centerX, centerY).map(({ tagName }) => tagName).reverse().join(' > ');
     const heights = [];
     const extracts = [];
-
+    
     let currentTallest = null;
     let currentTallestHeight = 0;
     let iterations = 100;
