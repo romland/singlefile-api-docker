@@ -1,4 +1,4 @@
-onload = () => {
+(() => {
     function elementHas(selector, buttonTexts) {
         var elements = document.querySelectorAll(selector);
         return Array.prototype.filter.call(elements, (element) => {
@@ -34,7 +34,7 @@ onload = () => {
     // 3. Now get the center element
     const centerX = Math.abs(window.innerWidth/2);
     const centerY = Math.abs(window.innerHeight/2);
-    let curr = document.elementFromPoint(centerX, centerY);
+    let curr = document.elementFromPoint(centerX, centerY) || document.body;
 
     const title = document.title;
     const url = window.location.href;
@@ -46,7 +46,7 @@ onload = () => {
     let currentTallest = null;
     let currentTallestHeight = 0;
     let iterations = 100;
-    while(curr.parentElement || iterations === 0) {
+    while(curr && curr.parentElement && iterations > 0) {
         const currHeight = curr.offsetHeight;
         heights.push([curr.tagName, currHeight]);
 
@@ -73,17 +73,21 @@ onload = () => {
 
     // Fallback in case we did not find anything.
     if(extracts.length === 0) {
-        extracts.push(currentTallest.innerText);
+        if (currentTallest) {
+            extracts.push(currentTallest.innerText);
+        }
         fallbackExtract = true;
     }
 
     const htmlNode = document.getElementsByTagName("html")[0];
-    const textNode = document.createComment("");
-    htmlNode.prepend(textNode);
+    if (htmlNode) {
+        const textNode = document.createComment("");
+        htmlNode.prepend(textNode);
+        textNode.textContent += "### META_EXTRACTION_START ###";
+        textNode.textContent += JSON.stringify(
+            { url, title, extracts, centerX, centerY, centerPath, centerText, heights, dismissedCookieDialog, fallbackExtract }
+        );
+        textNode.textContent += "### META_EXTRACTION_END ###";
+    }
 
-    textNode.textContent += "### META_EXTRACTION_START ###";
-    textNode.textContent += JSON.stringify(
-        { url, title, extracts, centerX, centerY, centerPath, centerText, heights, dismissedCookieDialog, fallbackExtract }
-    );
-    textNode.textContent += "### META_EXTRACTION_END ###";
-}
+})();
