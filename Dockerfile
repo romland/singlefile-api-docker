@@ -20,7 +20,7 @@ RUN apt-get update && \
 
 WORKDIR /opt/app
 
-RUN npm install 'gildas-lormeau/single-file-cli#master' express puppeteer-real-browser
+RUN npm install 'git+https://github.com/gildas-lormeau/single-file-cli.git#master' express puppeteer-real-browser
 # ==============================================================================
 # CRITICAL BUGFIX: REMOVE CHROMIUM '--single-process' FLAG
 # ------------------------------------------------------------------------------
