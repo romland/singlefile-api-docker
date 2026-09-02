@@ -1,4 +1,4 @@
-FROM node:slim
+FROM node:22-bullseye-slim
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
