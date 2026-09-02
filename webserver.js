@@ -9,7 +9,13 @@ const { connect } = require('puppeteer-real-browser');
 // Import the official script injectors from SingleFile
 const { getHookScriptSource, getScriptSource } = require('single-file-cli/lib/single-file-script.js');
 
-const BROWSER_PATH = '/opt/google/chrome/google-chrome';
+const BROWSER_PATH = [
+    '/opt/google/chrome/google-chrome',
+    '/usr/bin/google-chrome-stable',
+    '/usr/bin/chromium',
+    '/usr/bin/chromium-browser'
+].find(p => fs.existsSync(p)) || '/usr/bin/chromium';
+
 const BROWSER_ARGS = [
     '--disable-blink-features=AutomationControlled',
     '--window-size=1282,1051',
