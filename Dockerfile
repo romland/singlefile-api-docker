@@ -4,7 +4,7 @@ ARG TARGETARCH
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
 RUN apt-get update && \
-  apt-get install ca-certificates curl git gnupg xvfb fonts-liberation fontconfig -y --no-install-recommends && \
+  apt-get install ca-certificates curl git gnupg xvfb fonts-liberation fontconfig procps -y --no-install-recommends && \
   if [ "$TARGETARCH" = "arm64" ]; then \
     echo "📦 ARM64 detected: Installing native Chromium..." && \
     apt-get install chromium -y --no-install-recommends; \
